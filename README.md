@@ -13,3 +13,7 @@ If `code` doesn't work, please reference https://code.visualstudio.com/docs/setu
 Open the **Command Palette** by typing `Cmd`+`Shift`+`P`(Mac)/`Ctrl`+`Shift`+`P`(Windows/Linux) and select `Dev Containers: Rebuild and Reopen in Container`.
 
 You are all set.
+
+**Caveat**
+
+I'm using directories from my personal favorites. If you want to use different ones, please ensure they are consistent across launch.json, tasks.json, and the Dockerfile.

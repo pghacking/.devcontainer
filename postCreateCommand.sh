@@ -47,7 +47,6 @@ function configure_pg_plugins {
 
 function main {
   configure_coredumps
-  configure_git
   configure_vscode
   configure_perf
   configure_pg_plugins

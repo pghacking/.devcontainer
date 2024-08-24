@@ -1,0 +1,185 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    // See PostgreSQL meson doc link https://wiki.postgresql.org/wiki/Meson
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "meson setup",
+            "type": "shell",
+            "command": "meson",
+            "args": [
+                "setup",
+                "$HOME/build",          // out of source tree
+                "--prefix=$HOME/pgsql",
+                "--buildtype=debug",    // default is debugoptimized
+                "-Dc_args=-fno-inline-functions -fno-omit-frame-pointer -DCOPY_PARSE_PLAN_TREES -DWRITE_READ_PARSE_PLAN_TREES -DRAW_EXPRESSION_COVERAGE_TEST -DENFORCE_REGRESSION_TEST_NAME_RESTRICTIONS",
+                "-Dcassert=true",
+                "-Dtap_tests=enabled",
+                "--werror"
+            ],
+            "problemMatcher": [],
+            "detail": "meson setup debug configuration"
+        },
+        {
+            "label": "meson setup release",
+            "type": "shell",
+            "command": "meson",
+            "args": [
+                "setup",
+                "$HOME/build",
+                "--prefix=$HOME/pgsql",
+                "--buildtype=release"
+            ],
+            "problemMatcher": [],
+            "detail": "meson setup release configuration"
+        },
+        {
+            "label": "clear build directory",
+            "type": "shell",
+            "command": "rm -rf $HOME/build",
+            "problemMatcher": [],
+            "detail": "clear build directory"
+        },
+        {
+            "label": "ninja build",
+            "type": "shell",
+            "command": "ninja",
+            "args":[
+                "-C",
+                "$HOME/build",
+                "-j",
+                "4"
+            ],
+            "problemMatcher": [],
+            "detail": "build postgres"
+        },
+        {
+            "label": "regression tests",
+            "type": "shell",
+            "command": "meson test -C $HOME/build -q --print-errorlogs --suite setup --suite regress",
+            "problemMatcher": [],
+            "detail": "run main regression tests"
+        },
+        {
+            "label": "check-world",
+            "type": "shell",
+            "command": "meson test -C $HOME/build -q --print-errorlogs",
+            "problemMatcher": [],
+            "detail": "run all tests"
+        },
+        {
+            "label": "ninja install",
+            "type": "shell",
+            "command": "ninja install -C $HOME/build",
+            "problemMatcher": [],
+            "detail": "install pgsql"
+        },
+        {
+            "label": "init cluster",
+            "type": "shell",
+            "command": "$HOME/pgsql/bin/initdb",
+            "args": [
+                "-D",
+                "$PGDATA"
+            ],
+            "problemMatcher": [],
+            "detail": "init cluster using initdb"
+        },
+        {
+            "label": "start cluster",
+            "type": "shell",
+            "command": "$HOME/pgsql/bin/pg_ctl",
+            "args": [
+                "-D",
+                "$PGDATA",
+                "-l",
+                "$PGDATA/logfile",
+                "start"
+            ],
+            "problemMatcher": [],
+            "detail": "start db cluster"
+        },
+        {
+            "label": "restart cluster",
+            "type": "shell",
+            "command": "$HOME/pgsql/bin/pg_ctl",
+            "args": [
+                "-D",
+                "$PGDATA",
+                "-l",
+                "$PGDATA/logfile",
+                "restart"
+            ],
+            "problemMatcher": [],
+            "detail": "restart db cluster"
+        },
+        {
+            "label": "stop cluster",
+            "type": "shell",
+            "command": "$HOME/pgsql/bin/pg_ctl",
+            "args": [
+                "-D",
+                "$PGDATA",
+                "stop"
+            ],
+            "problemMatcher": [],
+            "detail": "stop db cluster"
+        },
+        {
+            "label": "clear pgdata",
+            "type": "shell",
+            "command": "rm -rf $PGDATA/*",
+            "problemMatcher": [],
+            "detail": "clear pgdata directory"
+        },
+        {
+            "label": "format patch",
+            "type": "shell",
+            "command": "git format-patch -o /opt/freedom/patches -${input:formatPatchNumber} -v ${input:formatPatchVersion}",
+            "problemMatcher": [],
+            "detail": "generate patches from the topmost <n> commits"
+        },
+        {
+            "label": "apply patch",
+            "type": "shell",
+            "command": "git am /opt/freedom/patches/${input:patchFile}",
+            "problemMatcher": [],
+            "detail": "apply patch"
+        },
+        {
+            "label": "clear patch directory",
+            "type": "shell",
+            "command": "rm -rf /opt/freedom/patches/*",
+            "problemMatcher": [],
+            "detail": "clear patch directory"
+        },
+        {
+            "label": "generate flamegraph",
+            "type": "shell",
+            "command": "timestamp=\"$(date +%Y%m%d%H%M%S)\" && perf record -o /tmp/perf.data -F 99 -a -g -- sleep 30 && perf script -i /tmp/perf.data | /opt/freedom/tools/FlameGraph/stackcollapse-perf.pl | /opt/freedom/tools/FlameGraph/flamegraph.pl > /opt/freedom/perf_$timestamp.svg",
+            "problemMatcher": [],
+            "detail": "generate flamegraph"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "formatPatchNumber",
+            "description": "patches from the topmost <n> commits",
+            "type": "promptString",
+            "default": "1"
+        },
+        {
+            "id": "formatPatchVersion",
+            "description": "<n>-th iteration of the topic",
+            "type": "promptString",
+            "default": "1"
+        },
+        {
+            "id": "patchFile",
+            "description": "Which patch file to apply?",
+            "type": "promptString",
+            "default": "*"
+        }
+    ]
+}

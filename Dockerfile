@@ -51,6 +51,7 @@ RUN apt update && apt install -y \
     protobuf-c-compiler \
     pspg \
     python3 python3-pip \
+    stow \
     strace \
     sudo \
     tmux \

@@ -12,7 +12,8 @@
     ],
     "mounts": [
         // You have to make sure source directory is avaliable on your host file system
-        "source=${localEnv:HOME}/freedom,target=/opt/freedom,type=bind,consistency=cached"
+        "source=${localEnv:HOME}/freedom,target=/opt/freedom,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.ssh,target=/home/postgres/.ssh,type=bind,readonly"
     ],
     "workspaceMount": "source=${localWorkspaceFolder},target=/home/postgres/postgres,type=bind,consistency=cached",
     "workspaceFolder": "/home/postgres/postgres",

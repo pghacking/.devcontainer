@@ -33,7 +33,8 @@
                 "rioj7.command-variable",
                 "74th.scrollkey",
                 "tristan957.postgres-config",
-                "tristan957.postgres-hacker"
+                "tristan957.postgres-hacker",
+                "ash-blade.postgresql-hacker-helper"
             ],
             "settings": {
                 "files.exclude": {

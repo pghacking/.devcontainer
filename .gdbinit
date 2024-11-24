@@ -1,8 +1,3 @@
-# gdbpg.py contains scripts to nicely print the postgres datastructures
-# while in a gdb session. Since the vscode debugger is based on gdb this
-# actually also works when debugging with vscode.
-source /root/gdbpg.py
-
 # when debugging postgres it is convenient to _always_ have a breakpoint
 # trigger when an error is logged. Because .gdbinit is sourced before gdb
 # is fully attached and has the sources loaded. To make sure the breakpoint

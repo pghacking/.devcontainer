@@ -38,7 +38,7 @@
             "label": "ninja build",
             "type": "shell",
             "command": "ninja",
-            "args":[
+            "args": [
                 "-C",
                 "$HOME/build",
                 "-j",
@@ -46,6 +46,18 @@
             ],
             "problemMatcher": [],
             "detail": "build postgres"
+        },
+        {
+            "label": "build document",
+            "type": "shell",
+            "command": "ninja",
+            "args": [
+                "-C",
+                "$HOME/build",
+                "html"
+            ],
+            "problemMatcher": [],
+            "detail": "build html document"
         },
         {
             "label": "regression tests",

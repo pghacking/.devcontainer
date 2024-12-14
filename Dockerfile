@@ -65,10 +65,14 @@ RUN apt update && apt install -y \
  && apt autoremove -y \
  && apt clean
 
+# Tools used to process the documentation
+# https://www.postgresql.org/docs/current/docguide-toolsets.html#DOCGUIDE-TOOLSETS-INST-DEBIAN
+RUN apt-get install -y docbook-xml docbook-xsl libxml2-utils xsltproc && apt-get autoremove -y
+
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 RUN cpanm install IPC::Run
 RUN cpanm https://cpan.metacpan.org/authors/id/S/SH/SHANCOCK/Perl-Tidy-20230309.tar.gz

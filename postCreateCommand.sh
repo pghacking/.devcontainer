@@ -20,9 +20,9 @@ function configure_vscode {
     "version": 4
 }
 EOL
-    cp .devcontainer/launch.json .vscode/
-    cp .devcontainer/tasks.json .vscode/
   fi
+  cp .devcontainer/launch.json .vscode/
+  cp .devcontainer/tasks.json .vscode/
 }
 
 # https://wiki.postgresql.org/wiki/Getting_a_stack_trace_of_a_running_PostgreSQL_backend_on_Linux/BSD

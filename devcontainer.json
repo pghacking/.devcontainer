@@ -27,14 +27,14 @@
                 "eamodio.gitlens",
                 "github.vscode-github-actions",
                 "GitHub.copilot",
-                "ms-vscode.cpptools-extension-pack",
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-themes",
                 "ms-vscode.hexeditor",
                 "ms-vscode.live-server",
                 "ms-vsliveshare.vsliveshare",
+                "mesonbuild.mesonbuild",
                 "rioj7.command-variable",
                 "74th.scrollkey",
-                "tristan957.postgres-config",
-                "tristan957.postgres-hacker",
                 "ash-blade.postgresql-hacker-helper"
             ],
             "settings": {
@@ -46,14 +46,12 @@
                 "C_Cpp.default.browse.databaseFilename": "${workspaceFolder}/.vscode/.browse.c_cpp.db",
                 "[c]": {
                     "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "tristan957.postgres-hacker"
+                    "editor.defaultFormatter": "ash-blade.postgresql-hacker-helper"
                 },
                 "files.associations": {
                     "*.h": "c"
                 },
-                "postgres-hacker.enable": true,
-                "postgres-hacker.pgindent.path": "src/tools/pgindent/pgindent",
-                "postgres-hacker.pgindent.indent": "../build/src/tools/pg_bsd_indent/pg_bsd_indent"
+                "postgresql-hacker-helper.pg_bsd_indentPath": "../build/src/tools/pg_bsd_indent/pg_bsd_indent"
             }
         }
     },

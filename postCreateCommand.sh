@@ -12,9 +12,7 @@ function configure_vscode {
                 "\${workspaceFolder}/**",
                 "\${workspaceFolder}/src/include/",
                 "\${workspaceFolder}/../build/src/include/"
-            ],
-            "cStandard": "c99",
-            "configurationProvider": "ms-vscode.makefile-tools"
+            ]
         }
     ],
     "version": 4

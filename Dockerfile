@@ -67,7 +67,7 @@ RUN apt update && apt install -y \
 
 # Tools used to process the documentation
 # https://www.postgresql.org/docs/current/docguide-toolsets.html#DOCGUIDE-TOOLSETS-INST-DEBIAN
-RUN apt-get install -y docbook-xml docbook-xsl libxml2-utils xsltproc && apt-get autoremove -y
+RUN apt-get install -y docbook-xml docbook-xsl libxml2-utils xsltproc && apt-get clean
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 ENV LANG=en_US.UTF-8

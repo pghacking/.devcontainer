@@ -32,7 +32,6 @@
                 "ms-vscode.hexeditor",
                 "ms-vscode.live-server",
                 "ms-vsliveshare.vsliveshare",
-                "mesonbuild.mesonbuild",
                 "rioj7.command-variable",
                 "74th.scrollkey",
                 "ash-blade.postgresql-hacker-helper"
@@ -54,8 +53,6 @@
                     "*.h": "c"
                 },
                 "postgresql-hacker-helper.pg_bsd_indentPath": "../build/src/tools/pg_bsd_indent/pg_bsd_indent",
-                "mesonbuild.configureOnOpen": false,
-                "mesonbuild.downloadLanguageServer": false
             }
         }
     },

@@ -18,6 +18,12 @@ function configure_vscode {
     "version": 4
 }
 EOL
+    cat <<EOL > ".vscode/pgsql_hacker_helper.json"
+{
+    "version": 3,
+    "typedefs": "src/tools/pgindent/typedefs.list"
+}
+EOL
   fi
   cp .devcontainer/launch.json .vscode/
   cp .devcontainer/tasks.json .vscode/

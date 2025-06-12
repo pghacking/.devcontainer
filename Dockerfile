@@ -77,10 +77,6 @@ ENV LC_ALL=en_US.UTF-8
 RUN cpanm install IPC::Run
 RUN cpanm https://cpan.metacpan.org/authors/id/S/SH/SHANCOCK/Perl-Tidy-20230309.tar.gz
 
-# Since gdb will run in the context of the root user when debugging, we need add
-# .gdbinit script into root home
-COPY --chown=root:root .gdbinit /root/
-
 # add the postgres user to sudoers and allow all sudoers to login without a password prompt
 RUN useradd -ms /bin/bash postgres \
  && usermod -aG sudo postgres \

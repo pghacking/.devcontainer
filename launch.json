@@ -17,7 +17,7 @@
             ]
         },
         {
-            "name": "(gdb) Attach Release",
+            "name": "(gdb) Attach Debug Optimized",
             "type": "cppdbg",
             "request": "attach",
             "processId": "${command:pickProcess}",
@@ -29,6 +29,28 @@
                     "description": "let gdb not stop when SIGUSR1 is sent to process",
                     "ignoreFailures": true
                 }
+            ]
+        },
+        {
+            "name": "(lldb) Attach Debug",
+            "type": "lldb",
+            "request": "attach",
+            "pid": "${command:pickProcess}",
+            "program": "${workspaceFolder}/Debug/install/bin/postgres",
+            "preRunCommands": [
+                "settings append target.exec-search-paths ${workspaceFolder}/Debug/install/lib",
+                "process handle SIGUSR1 -n false -s false -p true"
+            ]
+        },
+        {
+            "name": "(lldb) Attach Debug Optimized",
+            "type": "lldb",
+            "request": "attach",
+            "pid": "${command:pickProcess}",
+            "program": "${workspaceFolder}/Release/install/bin/postgres",
+            "preRunCommands": [
+                "settings append target.exec-search-paths ${workspaceFolder}/Release/install/lib",
+                "process handle SIGUSR1 -n false -s false -p true"
             ]
         }
     ]

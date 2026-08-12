@@ -3,8 +3,15 @@ FROM debian:bookworm AS base
 ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Optional: Uncomment this block to use the TUNA Debian mirror when the
+# default Debian repositories are slow or unavailable in your network.
+# RUN sed -i \
+#     -e 's|http://deb.debian.org/debian-security|http://mirrors.tuna.tsinghua.edu.cn/debian-security|g' \
+#     -e 's|http://deb.debian.org/debian|http://mirrors.tuna.tsinghua.edu.cn/debian|g' \
+#     /etc/apt/sources.list.d/debian.sources
+
 # install build tools(alphabetic order)
-RUN apt update && apt install -y \
+RUN apt-get update && apt-get -o Acquire::Retries=5 install -y \
     bash-completion \
     bison \
     bzip2 \
@@ -26,6 +33,7 @@ RUN apt update && apt install -y \
     libicu-dev \
     libkrb5-dev \
     liblz4-dev \
+    libossp-uuid-dev \
     libpam0g-dev \
     libperl-dev \
     libproj-dev \
@@ -61,9 +69,9 @@ RUN apt update && apt install -y \
     valgrind \
     wget \
     zlib1g-dev \
- && apt remove libpq-dev -y \
- && apt autoremove -y \
- && apt clean
+ && apt-get remove libpq-dev -y \
+ && apt-get autoremove -y \
+ && apt-get clean
 
 # Tools used to process the documentation
 # https://www.postgresql.org/docs/current/docguide-toolsets.html#DOCGUIDE-TOOLSETS-INST-DEBIAN
@@ -82,6 +90,9 @@ RUN useradd -ms /bin/bash postgres \
  && usermod -aG sudo postgres \
  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+RUN mkdir -p /home/postgres/.codex \
+ && chown postgres:postgres /home/postgres/.codex
+
 WORKDIR /home/postgres
 USER postgres
 
@@ -90,7 +101,9 @@ COPY --chown=postgres:postgres .psqlrc .
 RUN sudo mkdir -p /opt/freedom \
  && sudo chown -R postgres:postgres /opt/freedom
 
-ENV PATH="/home/postgres/pgsql/bin:$PATH"
-ENV PGPORT=5432
-ENV PGDATA=/home/postgres/pgdata
-EXPOSE 5432
+# Use the Debug installation by default in interactive container shells.
+# Release tasks use explicit paths under /home/postgres/postgres/Release.
+ENV PATH="/home/postgres/.local/node_modules/.bin:/home/postgres/postgres/Debug/install/bin:$PATH"
+ENV PGPORT=5433
+ENV PGDATA=/home/postgres/postgres/Debug/data
+EXPOSE 5433

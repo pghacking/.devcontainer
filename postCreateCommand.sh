@@ -1,8 +1,21 @@
 #!/bin/bash
 
+function configure_git_excludes {
+  local devcontainer_dir repo_root exclude_file pattern
+
+  devcontainer_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+  repo_root="$(dirname -- "$devcontainer_dir")"
+  exclude_file="$(git -C "$repo_root" rev-parse --path-format=absolute --git-path info/exclude)"
+
+  for pattern in '/.vscode/' '/.devcontainer/'; do
+    grep -qxF "$pattern" "$exclude_file" || printf '%s\n' "$pattern" >> "$exclude_file"
+  done
+}
+
 function configure_vscode {
-  if [ ! -d .vscode ]; then
-    mkdir .vscode
+  ./.devcontainer/setup-vscode.sh
+
+  if [ ! -f .vscode/c_cpp_properties.json ]; then
     cat <<EOL > ".vscode/c_cpp_properties.json"
 {
     "configurations": [
@@ -11,13 +24,16 @@ function configure_vscode {
             "includePath": [
                 "\${workspaceFolder}/**",
                 "\${workspaceFolder}/src/include/",
-                "\${workspaceFolder}/../build/src/include/"
+                "\${workspaceFolder}/Debug/src/include/"
             ]
         }
     ],
     "version": 4
 }
 EOL
+  fi
+
+  if [ ! -f .vscode/pgsql_hacker_helper.json ]; then
     cat <<EOL > ".vscode/pgsql_hacker_helper.json"
 {
     "version": 3,
@@ -25,8 +41,6 @@ EOL
 }
 EOL
   fi
-  cp .devcontainer/launch.json .vscode/
-  cp .devcontainer/tasks.json .vscode/
 }
 
 # https://wiki.postgresql.org/wiki/Getting_a_stack_trace_of_a_running_PostgreSQL_backend_on_Linux/BSD
@@ -50,6 +64,7 @@ function configure_pg_plugins {
 }
 
 function main {
+  configure_git_excludes
   configure_coredumps
   configure_vscode
   configure_perf

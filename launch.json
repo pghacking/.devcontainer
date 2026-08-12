@@ -2,12 +2,27 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Attach",
+            "name": "(gdb) Attach Debug",
             "type": "cppdbg",
             "request": "attach",
             "processId": "${command:pickProcess}",
-            "program": "/home/postgres/pgsql/bin/postgres",
-            "additionalSOLibSearchPath": "/home/postgres/pgsql/lib",
+            "program": "${workspaceFolder}/Debug/install/bin/postgres",
+            "additionalSOLibSearchPath": "${workspaceFolder}/Debug/install/lib",
+            "setupCommands": [
+                {
+                    "text": "handle SIGUSR1 noprint nostop pass",
+                    "description": "let gdb not stop when SIGUSR1 is sent to process",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(gdb) Attach Release",
+            "type": "cppdbg",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "program": "${workspaceFolder}/Release/install/bin/postgres",
+            "additionalSOLibSearchPath": "${workspaceFolder}/Release/install/lib",
             "setupCommands": [
                 {
                     "text": "handle SIGUSR1 noprint nostop pass",

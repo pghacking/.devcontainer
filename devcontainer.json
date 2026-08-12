@@ -2,7 +2,9 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
+    "initializeCommand": "test -f \"${localEnv:HOME}/.codex/auth.json\"",
     "runArgs": [
+        "--network=host",
         "--ulimit=core=-1",
         "--cap-add=SYS_ADMIN",
         "--cap-add=SYS_PTRACE",
@@ -14,12 +16,14 @@
     "mounts": [
         // You have to make sure source directory is avaliable on your host file system
         "source=${localEnv:HOME}/freedom,target=/opt/freedom,type=bind,consistency=cached",
-        "source=${localEnv:HOME}/.ssh,target=/home/postgres/.ssh,type=bind,readonly"
+        "source=${localEnv:HOME}/.ssh,target=/home/postgres/.ssh,type=bind,readonly",
+        // Reuse the host Codex login and allow Codex to persist refreshed tokens.
+        "source=${localEnv:HOME}/.codex/auth.json,target=/home/postgres/.codex/auth.json,type=bind"
     ],
     "workspaceMount": "source=${localWorkspaceFolder},target=/home/postgres/postgres,type=bind,consistency=cached",
     "workspaceFolder": "/home/postgres/postgres",
     "forwardPorts": [
-        5432
+        5433
     ],
     "customizations": {
         "vscode": {

@@ -7,7 +7,7 @@ function configure_git_excludes {
   repo_root="$(dirname -- "$devcontainer_dir")"
   exclude_file="$(git -C "$repo_root" rev-parse --path-format=absolute --git-path info/exclude)"
 
-  for pattern in '/.vscode/' '/.devcontainer/'; do
+  for pattern in '/.vscode/' '/.devcontainer/' '/.agents/'; do
     grep -qxF "$pattern" "$exclude_file" || printf '%s\n' "$pattern" >> "$exclude_file"
   done
 }

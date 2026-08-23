@@ -21,6 +21,7 @@
                 "-Dicu=enabled",
                 "-Dc_args=-fno-inline-functions -fno-omit-frame-pointer -DCOPY_PARSE_PLAN_TREES -DWRITE_READ_PARSE_PLAN_TREES -DRAW_EXPRESSION_COVERAGE_TEST -DENFORCE_REGRESSION_TEST_NAME_RESTRICTIONS",
                 "-Dcassert=true",
+                "-Ddtrace=auto",
                 "-Dtap_tests=enabled",
                 "--werror"
             ],
@@ -164,7 +165,8 @@
                 "--buildtype=debugoptimized",
                 "-Duuid=ossp",
                 "-Dicu=enabled",
-                "-Dc_args=-fno-omit-frame-pointer"
+                "-Dc_args=-fno-omit-frame-pointer",
+                "-Ddtrace=auto"     // On platforms supporting DTrace, -Ddtrace may also be reasonable to use in production.
             ],
             "problemMatcher": [],
             "detail": "meson setup debug-optimized configuration"

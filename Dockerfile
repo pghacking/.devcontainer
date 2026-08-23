@@ -62,6 +62,7 @@ RUN apt-get update && apt-get -o Acquire::Retries=5 install -y \
     stow \
     strace \
     sudo \
+    sytemtap-sdt-dev \
     tmux \
     tree \
     unzip \
